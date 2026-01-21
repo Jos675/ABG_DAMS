@@ -14,7 +14,7 @@ import aiofiles
 
 app = FastAPI(title="DAM System", description="Digital Asset Management System")
 
-app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"))
+app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY", default="your-secret-key-here-change-in-production"))
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

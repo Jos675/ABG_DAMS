@@ -8,9 +8,9 @@ from fastapi import HTTPException, status
 
 pwd_context = CryptContext(schemes=["scrypt"], deprecated="auto")
 
-SECRET_KEY = config("SECRET_KEY")
-ALGORITHM = config("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(config("ACCESS_TOKEN_EXPIRE_MINUTES"))
+SECRET_KEY = config("SECRET_KEY", default="your-secret-key-here-change-in-production")
+ALGORITHM = config("ALGORITHM", default="HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(config("ACCESS_TOKEN_EXPIRE_MINUTES", default=30))
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
