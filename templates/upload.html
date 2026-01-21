@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Asset - ABG Government</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            background: #fbbf24;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .logo-text {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+        }
+
+        .nav-tabs-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            color: #3b82f6;
+            background: #f8f9fa;
+        }
+
+        .nav-tab.active {
+            color: #1e40af;
+            border-bottom-color: #3b82f6;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 2.5em;
+            color: #1e40af;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1.1em;
+        }
+
+        .upload-form {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+
+        .file-input-container {
+            position: relative;
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            cursor: pointer;
+        }
+
+        .file-input-container:hover {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .file-input-container.dragover {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-icon {
+            font-size: 4em;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-text {
+            color: #374151;
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-info {
+            color: #6b7280;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+
+        .selected-file {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            color: #065f46;
+            font-weight: 500;
+        }
+
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .file-size {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .classification-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .classification-option {
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .classification-option:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .classification-option.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .classification-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .classification-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .classification-label {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .classification-desc {
+            font-size: 0.9em;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .tags-input {
+            position: relative;
+        }
+
+        .tags-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tag-chip {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            color: #7dd3fc;
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        .tag-remove:hover {
+            color: #0284c7;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn.secondary {
+            background: #6b7280;
+            margin-top: 15px;
+        }
+
+        .btn.secondary:hover {
+            background: #4b5563;
+        }
+
+        .upload-progress {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .upload-form {
+                padding: 25px;
+            }
+
+            .page-title {
+                font-size: 2em;
+            }
+
+            .classification-options {
+                grid-template-columns: 1fr;
+            }
+
+            .file-input-container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">ABG</div>
+                <div class="logo-text">Autonomous Region of Bougainville</div>
+            </div>
+            <div class="user-info">
+                <span>Welcome, <strong>{{ user.username }}</strong></span>
+                <span class="user-badge">{{ user.role }}</span>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <div class="nav-tabs-content">
+            <a href="/assets" class="nav-tab">📚 Digital Assets</a>
+            <a href="/upload" class="nav-tab active">📤 Upload</a>
+            <a href="/reports" class="nav-tab">📊 Reports</a>
+            <a href="/settings" class="nav-tab">⚙️ Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Upload New Asset</h1>
+            <p class="page-subtitle">Add documents, images, and other files to the digital asset library</p>
+        </div>
+
+        <div class="upload-form">
+            <form method="post" enctype="multipart/form-data" action="/upload" id="uploadForm">
+                <div class="form-section">
+                    <div class="section-title">📄 Asset Information</div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="title">Asset Title *</label>
+                        <input type="text" id="title" name="title" class="form-input" required placeholder="Enter a descriptive title for the asset">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea id="description" name="description" class="form-input form-textarea" placeholder="Provide additional details about this asset (optional)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="tags">Tags</label>
+                        <input type="text" id="tags" name="tags" class="form-input" placeholder="Enter tags separated by commas (e.g., document, report, 2024)">
+                        <div class="tags-display" id="tagsDisplay"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">🔒 Security Classification</div>
+
+                    <div class="classification-options">
+                        <label class="classification-option selected">
+                            <input type="radio" name="classification" value="regular" checked>
+                            <div class="classification-icon">🔓</div>
+                            <div class="classification-label">Regular</div>
+                            <div class="classification-desc">Standard access level for internal documents</div>
+                        </label>
+                        <label class="classification-option">
+                            <input type="radio" name="classification" value="public">
+                            <div class="classification-icon">🌐</div>
+                            <div class="classification-label">Public</div>
+                            <div class="classification-desc">Open access for public documents</div>
+                        </label>
+                        <label class="classification-option">
+                            <input type="radio" name="classification" value="confidential">
+                            <div class="classification-icon">🔐</div>
+                            <div class="classification-label">Confidential</div>
+                            <div class="classification-desc">Restricted access for sensitive information</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">📎 File Upload</div>
+
+                    <div class="form-group">
+                        <div class="file-input-container" id="fileContainer">
+                            <input type="file" id="file" name="file" required>
+                            <div class="file-upload-icon">📤</div>
+                            <div class="file-upload-text">Drop your file here or click to browse</div>
+                            <div class="file-upload-info">Supported formats: All file types • Maximum size: 100MB</div>
+                            <div class="selected-file" id="selectedFile" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-progress" id="uploadProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Uploading...</div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">📤 Upload Asset</button>
+                <a href="/assets" class="btn secondary">← Back to Assets</a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Classification selection
+        document.querySelectorAll('.classification-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.classification-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // File drag and drop
+        const fileContainer = document.getElementById('fileContainer');
+        const fileInput = document.getElementById('file');
+        const selectedFile = document.getElementById('selectedFile');
+
+        fileContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileContainer.classList.add('dragover');
+        });
+
+        fileContainer.addEventListener('dragleave', () => {
+            fileContainer.classList.remove('dragover');
+        });
+
+        fileContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileContainer.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                updateSelectedFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                updateSelectedFile(e.target.files[0]);
+            }
+        });
+
+        function updateSelectedFile(file) {
+            const size = (file.size / 1024 / 1024).toFixed(2);
+            selectedFile.innerHTML = `
+                <strong>${file.name}</strong>
+                <div class="file-details">
+                    <span class="file-size">${size} MB</span>
+                    <span>${file.type || 'Unknown type'}</span>
+                </div>
+            `;
+            selectedFile.style.display = 'block';
+        }
+
+        // Tags input handling
+        const tagsInput = document.getElementById('tags');
+        const tagsDisplay = document.getElementById('tagsDisplay');
+
+        tagsInput.addEventListener('input', updateTags);
+        tagsInput.addEventListener('change', updateTags);
+
+        function updateTags() {
+            const tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            tagsDisplay.innerHTML = '';
+            tags.forEach(tag => {
+                const tagChip = document.createElement('div');
+                tagChip.className = 'tag-chip';
+                tagChip.innerHTML = `${tag}<span class="tag-remove" onclick="removeTag('${tag}')">×</span>`;
+                tagsDisplay.appendChild(tagChip);
+            });
+        }
+
+        function removeTag(tagToRemove) {
+            const currentTags = tagsInput.value.split(',').map(tag => tag.trim());
+            const filteredTags = currentTags.filter(tag => tag !== tagToRemove);
+            tagsInput.value = filteredTags.join(', ');
+            updateTags();
+        }
+
+        // Form validation and submission
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const progress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            submitBtn.textContent = '📤 Uploading...';
+            submitBtn.disabled = true;
+            progress.style.display = 'block';
+
+            // Simulate upload progress
+            let progressValue = 0;
+            const progressInterval = setInterval(() => {
+                progressValue += Math.random() * 15;
+                if (progressValue >= 90) {
+                    progressValue = 90;
+                    clearInterval(progressInterval);
+                }
+                progressFill.style.width = progressValue + '%';
+                progressText.textContent = `Uploading... ${Math.round(progressValue)}%`;
+            }, 200);
+        });
+    </script>
+</body>
+</html>
